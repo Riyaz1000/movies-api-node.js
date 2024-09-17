@@ -9,12 +9,14 @@ app.get("/", (req, res) => {
   res.json({ msg: "hello students..!!!" });
 });
 
-// connect DB
+// api understanding middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// connect DB
 connectDB();
 
 // USING MIDDLEWARES
-
 app.use("/movies", movieRoutes);
 
 app.listen(PORT, () => {
