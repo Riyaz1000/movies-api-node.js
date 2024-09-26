@@ -1,7 +1,12 @@
 import Movie from "../models/movie.model.js";
 
-export const movieIndex = (req, res) => {
-  res.send("get all the movies");
+export const movieIndex = async (req, res) => {
+  try {
+    const movie = await Movie.find();
+    res.json(movie);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const movieCreate = async (req, res) => {
@@ -14,7 +19,7 @@ export const movieCreate = async (req, res) => {
   });
 
   try {
-    // save pandrathu
+    // try la save pandrathu error vandha catch la tharuthu
     const movie = await newMovie.save();
     return res.status(201).json(movie);
   } catch (error) {
