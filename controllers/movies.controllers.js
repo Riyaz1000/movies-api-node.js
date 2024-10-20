@@ -27,10 +27,36 @@ export const movieCreate = async (req, res) => {
   }
 };
 
-export const movieUpdate = (req, res) => {
-  res.send("update all the movies");
+export const movieUpdate = async (req, res) => {
+  //validate the user input
+
+  try {
+    const updatedMovie = await Movie.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        title: req.body.title,
+        desc: req.body.desc,
+      },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(updatedMovie);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+
+  // res.send("update all the movies");
 };
 
-export const movieDelete = (req, res) => {
-  res.send("delete all the moviess");
+export const movieDelete = async (req, res) => {
+  const movieId = req.params.id;
+
+  try {
+    await Movie.deleteOne({ _id: movieId });
+
+    res.json({ message: "movie deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
